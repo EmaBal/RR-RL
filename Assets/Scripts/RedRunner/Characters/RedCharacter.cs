@@ -71,7 +71,7 @@ namespace RedRunner.Characters
 		protected bool m_Guard = false;
 		protected bool m_Block = false;
 		protected Vector2 m_Speed = Vector2.zero;
-		protected float m_CurrentRunSpeed = 0f;
+		[HideInInspector]public float m_CurrentRunSpeed = 0f;
 		protected float m_CurrentSmoothVelocity = 0f;
 		protected int m_CurrentFootstepSoundIndex = 0;
 		protected Vector3 m_InitialScale;
@@ -79,6 +79,10 @@ namespace RedRunner.Characters
 
 		#endregion
 
+		public int direction = 0;
+		public int jumping = 0;
+		public float directionFloat = 0f;
+		
 		#region Properties
 
 		public override float MaxRunSpeed
@@ -298,8 +302,8 @@ namespace RedRunner.Characters
 			}
 
 			// Input Processing
-			Move ( CrossPlatformInputManager.GetAxis ( "Horizontal" ) );
-			if ( CrossPlatformInputManager.GetButtonDown ( "Jump" ) )
+			Move (directionFloat);
+			if (jumping == 1)
 			{
 				Jump ();
 			}
@@ -380,6 +384,9 @@ namespace RedRunner.Characters
 		//				}
 		//			}
 		//		}
+
+
+		
 
 		#endregion
 

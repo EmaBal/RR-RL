@@ -71,7 +71,9 @@ namespace RedRunner
         public void Init()
         {
             var loadingScreen = GetUIScreen(UIScreenInfo.LOADING_SCREEN);
-            OpenScreen(loadingScreen);
+            var ingameScreen = GetUIScreen(UIScreenInfo.IN_GAME_SCREEN);
+            //OpenScreen(loadingScreen);
+            OpenScreen(ingameScreen);
         }
 
         void Update()

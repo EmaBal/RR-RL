@@ -154,11 +154,15 @@ namespace RedRunner
                 OnScoreChanged(m_Score, m_HighScore, m_LastScore);
             }
 
-            yield return new WaitForSecondsRealtime(1.5f);
+            yield return new WaitForSecondsRealtime(0.5f);
 
-            EndGame();
-            var endScreen = UIManager.Singleton.UISCREENS.Find(el => el.ScreenInfo == UIScreenInfo.END_SCREEN);
-            UIManager.Singleton.OpenScreen(endScreen);
+            //EndGame();
+            Reset();
+            var ingameScreen = UIManager.Singleton.UISCREENS.Find(el => el.ScreenInfo == UIScreenInfo.IN_GAME_SCREEN);
+            UIManager.Singleton.OpenScreen(ingameScreen);
+            StartGame();
+            //var endScreen = UIManager.Singleton.UISCREENS.Find(el => el.ScreenInfo == UIScreenInfo.END_SCREEN);
+            //UIManager.Singleton.OpenScreen(endScreen);
         }
 
         private void Start()
@@ -172,7 +176,8 @@ namespace RedRunner
         {
             EndGame();
             UIManager.Singleton.Init();
-            StartCoroutine(Load());
+            //StartCoroutine(Load());
+            StartGame();
         }
 
         void Update()
@@ -190,11 +195,17 @@ namespace RedRunner
             }
         }
 
-        IEnumerator Load()
+        IEnumerator Load() // non serve piu
         {
-            var startScreen = UIManager.Singleton.UISCREENS.Find(el => el.ScreenInfo == UIScreenInfo.START_SCREEN);
-            yield return new WaitForSecondsRealtime(3f);
-            UIManager.Singleton.OpenScreen(startScreen);
+            yield return new WaitForSecondsRealtime(1f);
+            var uiManager = UIManager.Singleton;
+            var InGameScreen = uiManager.UISCREENS.Find(el => el.ScreenInfo == UIScreenInfo.IN_GAME_SCREEN);
+            uiManager.OpenScreen(InGameScreen);
+            
+            StartGame();
+            // var startScreen = UIManager.Singleton.UISCREENS.Find(el => el.ScreenInfo == UIScreenInfo.START_SCREEN);
+            // yield return new WaitForSecondsRealtime(3f);
+            // UIManager.Singleton.OpenScreen(startScreen);
         }
 
         void OnApplicationQuit()
