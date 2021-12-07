@@ -3,16 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using RedRunner.Characters;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TrackCheckpoints : MonoBehaviour
 {
     public event EventHandler OnPlayerCorrectCheckpoint;
     public event EventHandler OnPlayerWrongCheckpoint;
-    
+
     private List<CheckpointSingle> checkpointSingleList;
     private int nextCheckpointSingleIndex;
     private void Awake()
     {
+
         Transform checkpointTransform = transform.Find("Checkpoints");
 
         checkpointSingleList = new List<CheckpointSingle>();
@@ -31,19 +33,19 @@ public class TrackCheckpoints : MonoBehaviour
     {
         if (checkpointSingleList.IndexOf(checkpointSingle) == nextCheckpointSingleIndex)
         {
+            OnPlayerCorrectCheckpoint?.Invoke(this, EventArgs.Empty);
             Debug.Log("correct");
             nextCheckpointSingleIndex++;
-            OnPlayerCorrectCheckpoint?.Invoke(this, EventArgs.Empty);
         }
         else
         {
-            Debug.Log("wrong");
             OnPlayerWrongCheckpoint?.Invoke(this, EventArgs.Empty);
+            Debug.Log("wrong");
         }
     }
 
-    public string getParentName()
+    public int getCheckpointsNumber()
     {
-        return transform.parent.name;
+        return checkpointSingleList.Count;
     }
 }

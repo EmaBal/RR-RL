@@ -6175,6 +6175,8 @@ MonoBehaviour:
   direction: 0
   jumping: 0
   directionFloat: 0
+  trackCheckpointsRed: {fileID: 0}
+  redAgent: {fileID: 0}
 --- !u!50 &50120193809232062
 Rigidbody2D:
   serializedVersion: 4
@@ -6278,7 +6280,7 @@ MonoBehaviour:
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: RedBehav
+  m_BehaviorName: CharacterBehav
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -6298,7 +6300,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
+  MaxStep: 2000
 --- !u!114 &8700932143272143510
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,6 +12,8 @@ namespace RedRunner.Characters
 
 	public class RedCharacter : Character
 	{
+		
+		
 		#region Fields
 
 		[Header ( "Character Details" )]
@@ -79,9 +81,22 @@ namespace RedRunner.Characters
 
 		#endregion
 
-		public int direction = 0;
-		public int jumping = 0;
-		public float directionFloat = 0f;
+		[HideInInspector] public int direction = 0;
+		[HideInInspector] public int jumping = 0;
+		[HideInInspector] public float directionFloat = 0f;
+
+		[HideInInspector] public TrackCheckpoints trackCheckpointsRed;
+		[HideInInspector] public RedAgent redAgent;
+
+		public void setTrackCheckpointsRed(TrackCheckpoints trackCheckpointsRed)
+		{
+			this.trackCheckpointsRed = trackCheckpointsRed;
+		}
+
+		public TrackCheckpoints getTrackCheckpointsRed()
+		{
+			return this.trackCheckpointsRed;
+		}
 		
 		#region Properties
 
@@ -277,6 +292,7 @@ namespace RedRunner.Characters
 			m_Block = false;
 			m_CurrentFootstepSoundIndex = 0;
 			GameManager.OnReset += GameManager_OnReset;
+			redAgent = this.GetComponent<RedAgent>();
 		}
 
 		void Update ()
@@ -477,6 +493,7 @@ namespace RedRunner.Characters
 
 		public override void Die ( bool blood )
 		{
+			redAgent.setAgentDead(true);
 			if ( !IsDead.Value )
 			{
                 IsDead.Value = true;

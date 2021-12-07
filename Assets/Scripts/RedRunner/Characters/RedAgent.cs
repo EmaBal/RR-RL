@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RedRunner;
 using RedRunner.Characters;
 using UnityEngine;
 using Unity.MLAgents;
@@ -17,93 +18,129 @@ public class RedAgent : Agent
     private GameObject[] gameObjects;
     private List<GameObject> gameObjectsList;
     private GameObject[] newGameObjects;
+    private int currentBlockCheckpointsNumber;
+    private TrackCheckpoints currentTrackCheckpoints;
+    private bool isBlockFinished = false;
+    private bool firstCheckpointPassed;
+    private bool agentDead;
+    private GameManager gm;
+    private int stepsSinceLastCheckpoint;
+
+    [SerializeField] private int maxEnvironmentStep;
     
-    private void Start()
+    public override void OnEpisodeBegin()
     {
-        StartCoroutine(FindPieces());
-    }
-    
-    IEnumerator FindPieces()
-    {
-        yield return new WaitForSeconds (1f);
-        gameObjectsList = new List<GameObject>();
-        gameObjects = GameObject.FindObjectsOfType<GameObject>();
-    
-        for (var i=0; i < gameObjects.Length; i++){
-            if(gameObjects[i].name.StartsWith("Start(Clone") || gameObjects[i].name.StartsWith("Middle")){
-                gameObjectsList.Add(gameObjects[i]);
-                Debug.Log(gameObjects[i]);
-            }
-        }
-        
-        foreach (GameObject var in gameObjectsList)
-        {
-            if (var.name.Equals("Start(Clone)"))
-            {
-                Subscribe(var.GetComponent<TrackCheckpoints>());
-            }
-        }
+        currentBlockCheckpointsNumber = 0;
+        firstCheckpointPassed = false;
+        // if (Time.timeScale > 1f)
+        // {
+        //     Debug.Log("timescale>1 :"+Time.timeScale);
+        //     trackCheckpoints = GameObject.Find("Start(Clone)").GetComponent<TrackCheckpoints>();
+        //     currentTrackCheckpoints = trackCheckpoints;
+        //     Subscribe(trackCheckpoints);
+        // } else if (Time.timeScale == 1f)
+        // {
+        //     Debug.Log("timescale1");
+        //     StartCoroutine(FirstTrackCheckpoint());
+        // }
+        StartCoroutine(FirstTrackCheckpoint());
+        agentDead = false;
+        stepsSinceLastCheckpoint = 0;
     }
 
-    private void FindNewPieces()
+    public void setAgentDead(bool agentDead)
     {
-        newGameObjects = GameObject.FindObjectsOfType<GameObject>();
-        
-        for (var i=0; i < newGameObjects.Length; i++){
-            if(newGameObjects[i].name.StartsWith("Start(Clone") || newGameObjects[i].name.StartsWith("Middle")){
-                if (!gameObjectsList.Contains(newGameObjects[i]))
-                {
-                    gameObjectsList.Add(newGameObjects[i]);
-                }
-            }
-        }
+        this.agentDead = agentDead;
+    } 
+
+    IEnumerator FirstTrackCheckpoint()
+    {
+        yield return new WaitForSeconds (1f);
+        trackCheckpoints = GameObject.Find("Start(Clone)").GetComponent<TrackCheckpoints>();
+        currentTrackCheckpoints = trackCheckpoints;
+        Subscribe(trackCheckpoints);
     }
-    
+
     private void Subscribe(TrackCheckpoints tc)
     {
+        Debug.Log("SUBSCRIBED TO " + tc);
         tc.OnPlayerCorrectCheckpoint += TrackCheckpoints_OnPlayerCorrectCheckpoint;
         tc.OnPlayerWrongCheckpoint += TrackCheckpoints_OnPlayerWrongCheckpoint;
     }
 
     private void TrackCheckpoints_OnPlayerCorrectCheckpoint(object sender, System.EventArgs e)
     {
+        stepsSinceLastCheckpoint = 0;
+        firstCheckpointPassed = true;
+        //Debug.Log("rew event");
         Debug.Log("reward added");
-        AddReward(0.1f);
-        //Debug.Log((TrackCheckpoints)sender.getParentName());
+        AddReward(1f);
+        currentBlockCheckpointsNumber++;
+        if (currentBlockCheckpointsNumber == currentTrackCheckpoints.getCheckpointsNumber())
+        {
+            isBlockFinished = true;
+            currentBlockCheckpointsNumber = 0;
+        }
     }
     
     private void TrackCheckpoints_OnPlayerWrongCheckpoint(object sender, System.EventArgs e)
     {
+        stepsSinceLastCheckpoint = 0;
         Debug.Log("penalty added");
-        AddReward(-0.1f);
+        AddReward(-1f);
+        //redrunner.Die();
+        //EndEpisode();
     }
 
     private void Awake()
     {
         redrunner = GetComponent<RedCharacter>();
+        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         Academy.Instance.AutomaticSteppingEnabled = false;
     }
     
     void Update()
     {
-        // startClone = GameObject.Find("Start(Clone)");
-        // Debug.Log(startClone);
-        // try
-        // {
-        //     trackCheckpoints = startClone.GetComponent<TrackCheckpoints>();
-        // }
-        // catch
-        // {
-        //     Debug.Log("catch");
-        // }
-
         Academy.Instance.EnvironmentStep();
+        
+        stepsSinceLastCheckpoint++;
+        if (stepsSinceLastCheckpoint >= maxEnvironmentStep)
+        {
+            redrunner.Die(false);
+            EndEpisode();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (firstCheckpointPassed){
+            trackCheckpoints = redrunner.getTrackCheckpointsRed();
+            if (trackCheckpoints != currentTrackCheckpoints)
+            {
+                currentTrackCheckpoints = trackCheckpoints;
+                Subscribe(trackCheckpoints);
+                Debug.Log("rew fixedupdate");
+                Debug.Log("reward added");
+                AddReward(1f);
+            }
+        }
+        
+        if (agentDead)
+        {
+            AddReward(-1f);
+            Debug.Log("character dead");
+            EndEpisode();
+            agentDead = false;
+        }
+
+
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
+        
         sensor.AddObservation(redrunner.transform.localPosition);
-        sensor.AddObservation(redrunner.m_CurrentRunSpeed);
+        sensor.AddObservation(redrunner.GetComponent<Rigidbody2D>().velocity.x);
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -120,10 +157,12 @@ public class RedAgent : Agent
                 redrunner.jumping = 1; //jump button down
                 break;
         }
+        AddReward(-0.1f / maxEnvironmentStep);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
+        Time.timeScale = 2f;
         var discreteActionsOut = actionsOut.DiscreteActions;
         var continuousActionsOut = actionsOut.ContinuousActions;
         continuousActionsOut[0] = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -133,4 +172,14 @@ public class RedAgent : Agent
             discreteActionsOut[0] = 1;
         }
     }
+
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if (other.CompareTag("Instakill"))
+    //     {
+    //         redrunner.Die();
+    //         AddReward(-1f);
+    //         EndEpisode();
+    //     }
+    // }
 }

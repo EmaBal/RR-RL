@@ -97,7 +97,8 @@ namespace RedRunner.Utilities
 			}
 			if ( targetPosition.y - m_Camera.orthographicSize > m_MinY )
 			{
-				cameraPosition.y = targetPosition.y;
+				//cameraPosition.y = targetPosition.y;
+				cameraPosition.y = m_MinY + m_Camera.orthographicSize;
 			}
 			else
 			{

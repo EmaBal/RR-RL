@@ -211,7 +211,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 12}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 
@@ -328,7 +328,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 12}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
@@ -1149,7 +1149,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &79
 Transform:
@@ -50167,7 +50167,7 @@ RectTransform:
   - {fileID: 2002146931}
   - {fileID: 521407041}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -50206,7 +50206,7 @@ RectTransform:
   m_Children:
   - {fileID: 220}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -50548,7 +50548,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: x 0
+  m_Text: x 3388
   m_CoinTextFormat: x {0}
 --- !u!114 &254
 MonoBehaviour:
@@ -51415,7 +51415,7 @@ MonoBehaviour:
   m_MainCharacter: {fileID: 292}
   m_ShareText: 'I have played Red Runner game and enjoyed! this is really amazing!
 
-    
+
 
     Get
     it now!'
@@ -56891,7 +56891,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4765768628993670, guid: 639fab1b9d4c44d44908b5a6ecaceafc, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4765768628993670, guid: 639fab1b9d4c44d44908b5a6ecaceafc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -56973,8 +56973,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4115949647110239947, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
         type: 3}
+      propertyPath: m_BehaviorName
+      value: CharacterBehav
+      objectReference: {fileID: 0}
+    - target: {fileID: 4115949647110239947, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
+        type: 3}
       propertyPath: m_BehaviorType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4115949647110239947, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
         type: 3}
@@ -57018,8 +57023,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4538206470407753945, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
         type: 3}
+      propertyPath: MaxStep
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4538206470407753945, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
+        type: 3}
       propertyPath: trackCheckpoints
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4538206470407753945, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
+        type: 3}
+      propertyPath: maxEnvironmentStep
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 4539713298992423285, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
         type: 3}
@@ -57030,6 +57045,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RayLayerMask.m_Bits
       value: 6963
+      objectReference: {fileID: 0}
+    - target: {fileID: 4539713298992423285, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
+        type: 3}
+      propertyPath: m_DetectableTags.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4539713298992423285, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
+        type: 3}
+      propertyPath: m_DetectableTags.Array.data[8]
+      value: Instakill
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 639fab1b9d4c44d44908b5a6ecaceafc, type: 3}

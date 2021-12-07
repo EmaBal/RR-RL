@@ -142,7 +142,7 @@ namespace RedRunner
             }
         }
 
-        IEnumerator DeathCrt()
+        public IEnumerator DeathCrt()
         {
             m_LastScore = m_Score;
             if (m_Score > m_HighScore)
@@ -248,13 +248,13 @@ namespace RedRunner
         public void StopGame()
         {
             m_GameRunning = false;
-            Time.timeScale = 0f;
+            //Time.timeScale = 0f;
         }
 
         public void ResumeGame()
         {
             m_GameRunning = true;
-            Time.timeScale = 1f;
+            //Time.timeScale = 1f;
         }
 
         public void EndGame()
