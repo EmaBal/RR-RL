@@ -88,8 +88,8 @@ public class RedAgent : Agent
         stepsSinceLastCheckpoint = 0;
         Debug.Log("penalty added");
         AddReward(-1f);
-        //redrunner.Die();
-        //EndEpisode();
+        redrunner.Die();
+        EndEpisode();
     }
 
     private void Awake()
@@ -173,13 +173,13 @@ public class RedAgent : Agent
         }
     }
 
-    // private void OnTriggerEnter2D(Collider2D other)
-    // {
-    //     if (other.CompareTag("Instakill"))
-    //     {
-    //         redrunner.Die();
-    //         AddReward(-1f);
-    //         EndEpisode();
-    //     }
-    // }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Instakill"))
+        {
+            redrunner.Die();
+            AddReward(-1f);
+            EndEpisode();
+        }
+    }
 }
