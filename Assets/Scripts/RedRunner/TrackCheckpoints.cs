@@ -12,9 +12,10 @@ public class TrackCheckpoints : MonoBehaviour
 
     private List<CheckpointSingle> checkpointSingleList;
     private int nextCheckpointSingleIndex;
+
+    private String checkpointCorrect;
     private void Awake()
     {
-
         Transform checkpointTransform = transform.Find("Checkpoints");
 
         checkpointSingleList = new List<CheckpointSingle>();
@@ -27,18 +28,22 @@ public class TrackCheckpoints : MonoBehaviour
         }
 
         nextCheckpointSingleIndex = 0;
+
+        checkpointCorrect = "not set";
     }
 
     public void PlayerThroughCheckpoint(CheckpointSingle checkpointSingle)
     {
         if (checkpointSingleList.IndexOf(checkpointSingle) == nextCheckpointSingleIndex)
         {
+            checkpointCorrect = "correct";
             OnPlayerCorrectCheckpoint?.Invoke(this, EventArgs.Empty);
             Debug.Log("correct");
             nextCheckpointSingleIndex++;
         }
         else
         {
+            checkpointCorrect = "wrong";
             OnPlayerWrongCheckpoint?.Invoke(this, EventArgs.Empty);
             Debug.Log("wrong");
         }
@@ -47,5 +52,15 @@ public class TrackCheckpoints : MonoBehaviour
     public int getCheckpointsNumber()
     {
         return checkpointSingleList.Count;
+    }
+
+    public void setCheckpointState(String checkpointCorrect)
+    {
+        this.checkpointCorrect = checkpointCorrect;
+    }
+    
+    public String getCheckpointState()
+    {
+        return checkpointCorrect;
     }
 }

@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using RedRunner;
 using RedRunner.Characters;
+using RedRunner.TerrainGeneration;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
@@ -25,9 +27,10 @@ public class RedAgent : Agent
     private bool agentDead;
     private GameManager gm;
     private int stepsSinceLastCheckpoint;
+    Rigidbody2D redrunnerRigidbody;
 
     [SerializeField] private int maxEnvironmentStep;
-    
+
     public override void OnEpisodeBegin()
     {
         currentBlockCheckpointsNumber = 0;
@@ -44,21 +47,31 @@ public class RedAgent : Agent
         //     StartCoroutine(FirstTrackCheckpoint());
         // }
         StartCoroutine(FirstTrackCheckpoint());
+        //FirstTrackCheckpointNoWait();
         agentDead = false;
         stepsSinceLastCheckpoint = 0;
+        redrunnerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
     }
 
     public void setAgentDead(bool agentDead)
     {
         this.agentDead = agentDead;
-    } 
+    }
 
-    IEnumerator FirstTrackCheckpoint()
+    void FirstTrackCheckpointNoWait()
     {
-        yield return new WaitForSeconds (1f);
-        trackCheckpoints = GameObject.Find("Start(Clone)").GetComponent<TrackCheckpoints>();
+        //trackCheckpoints = GameObject.Find("Start(Clone)").GetComponent<TrackCheckpoints>();
         currentTrackCheckpoints = trackCheckpoints;
         Subscribe(trackCheckpoints);
+    }
+    IEnumerator FirstTrackCheckpoint()
+    {
+        yield return new WaitForSeconds (1f * Time.timeScale);
+        trackCheckpoints = TerrainGenerator.Singleton.GetCharacterBlock().GetComponent<TrackCheckpoints>();
+        //trackCheckpoints = GameObject.Find("Start(Clone)").GetComponent<TrackCheckpoints>();
+        currentTrackCheckpoints = trackCheckpoints;
+        Subscribe(trackCheckpoints);
+        redrunnerRigidbody.constraints &= ~RigidbodyConstraints2D.FreezePosition;
     }
 
     private void Subscribe(TrackCheckpoints tc)
@@ -88,6 +101,7 @@ public class RedAgent : Agent
         stepsSinceLastCheckpoint = 0;
         Debug.Log("penalty added");
         AddReward(-1f);
+        Unsubscribe(trackCheckpoints);
         redrunner.Die();
         EndEpisode();
     }
@@ -97,6 +111,7 @@ public class RedAgent : Agent
         redrunner = GetComponent<RedCharacter>();
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         Academy.Instance.AutomaticSteppingEnabled = false;
+        redrunnerRigidbody = GetComponent<Rigidbody2D>();
     }
     
     void Update()
@@ -129,11 +144,27 @@ public class RedAgent : Agent
         {
             AddReward(-1f);
             Debug.Log("character dead");
+            Unsubscribe(trackCheckpoints);
             EndEpisode();
             agentDead = false;
         }
 
-
+        /*if (trackCheckpoints.getCheckpointState().Equals("correct"))
+        {
+            stepsSinceLastCheckpoint = 0;
+            firstCheckpointPassed = true;
+            Debug.Log("reward added");
+            AddReward(1f);
+            trackCheckpoints.setCheckpointState("not set");
+        } else if (trackCheckpoints.getCheckpointState().Equals("wrong"))
+        {
+            stepsSinceLastCheckpoint = 0;
+            Debug.Log("penalty added");
+            AddReward(-1f);
+            trackCheckpoints.setCheckpointState("not set");
+            redrunner.Die();
+            EndEpisode();
+        }*/
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -155,6 +186,7 @@ public class RedAgent : Agent
                 break;
             case 1:
                 redrunner.jumping = 1; //jump button down
+                AddReward(-0.1f);
                 break;
         }
         AddReward(-0.1f / maxEnvironmentStep);
@@ -162,7 +194,7 @@ public class RedAgent : Agent
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        Time.timeScale = 2f;
+        Time.timeScale = 1f;
         var discreteActionsOut = actionsOut.DiscreteActions;
         var continuousActionsOut = actionsOut.ContinuousActions;
         continuousActionsOut[0] = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -181,5 +213,17 @@ public class RedAgent : Agent
             AddReward(-1f);
             EndEpisode();
         }
+    }
+
+    // private void OnDestroy()
+    // {
+    //     Unsubscribe(trackCheckpoints);
+    // }
+
+    private void Unsubscribe(TrackCheckpoints tc)
+    {
+        Debug.Log("UNSUBSCRIBED TO " + tc);
+        tc.OnPlayerCorrectCheckpoint -= TrackCheckpoints_OnPlayerCorrectCheckpoint;
+        tc.OnPlayerWrongCheckpoint -= TrackCheckpoints_OnPlayerWrongCheckpoint;
     }
 }

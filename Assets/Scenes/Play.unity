@@ -50548,7 +50548,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: x 3388
+  m_Text: x 1231925
   m_CoinTextFormat: x {0}
 --- !u!114 &254
 MonoBehaviour:
@@ -56921,6 +56921,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 50120193809232062, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
+        type: 3}
+      propertyPath: m_SleepingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 70389374301985556, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
         type: 3}
       propertyPath: m_IsTrigger
@@ -56973,6 +56978,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4115949647110239947, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
         type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: 0730d292c821c1640854634ff9b558d7,
+        type: 3}
+    - target: {fileID: 4115949647110239947, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
+        type: 3}
       propertyPath: m_BehaviorName
       value: CharacterBehav
       objectReference: {fileID: 0}
@@ -56990,6 +57001,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_BrainParameters.VectorActionSize.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4115949647110239947, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
+        type: 3}
+      propertyPath: m_BrainParameters.NumStackedVectorObservations
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4115949647110239947, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
         type: 3}
