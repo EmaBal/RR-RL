@@ -16,16 +16,16 @@ public class RedAgent : Agent
 {
     private RedCharacter redrunner;
     private TrackCheckpoints trackCheckpoints;
-    private GameObject startClone;
-    private GameObject[] gameObjects;
-    private List<GameObject> gameObjectsList;
-    private GameObject[] newGameObjects;
+    //private GameObject startClone;
+    //private GameObject[] gameObjects;
+    //private List<GameObject> gameObjectsList;
+    // GameObject[] newGameObjects;
     private int currentBlockCheckpointsNumber;
     private TrackCheckpoints currentTrackCheckpoints;
-    private bool isBlockFinished = false;
+    //private bool isBlockFinished = false;
     private bool firstCheckpointPassed;
     private bool agentDead;
-    private GameManager gm;
+    //private GameManager gm;
     private int stepsSinceLastCheckpoint;
     Rigidbody2D redrunnerRigidbody;
 
@@ -35,19 +35,7 @@ public class RedAgent : Agent
     {
         currentBlockCheckpointsNumber = 0;
         firstCheckpointPassed = false;
-        // if (Time.timeScale > 1f)
-        // {
-        //     Debug.Log("timescale>1 :"+Time.timeScale);
-        //     trackCheckpoints = GameObject.Find("Start(Clone)").GetComponent<TrackCheckpoints>();
-        //     currentTrackCheckpoints = trackCheckpoints;
-        //     Subscribe(trackCheckpoints);
-        // } else if (Time.timeScale == 1f)
-        // {
-        //     Debug.Log("timescale1");
-        //     StartCoroutine(FirstTrackCheckpoint());
-        // }
         StartCoroutine(FirstTrackCheckpoint());
-        //FirstTrackCheckpointNoWait();
         agentDead = false;
         stepsSinceLastCheckpoint = 0;
         redrunnerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -57,18 +45,11 @@ public class RedAgent : Agent
     {
         this.agentDead = agentDead;
     }
-
-    void FirstTrackCheckpointNoWait()
-    {
-        //trackCheckpoints = GameObject.Find("Start(Clone)").GetComponent<TrackCheckpoints>();
-        currentTrackCheckpoints = trackCheckpoints;
-        Subscribe(trackCheckpoints);
-    }
+    
     IEnumerator FirstTrackCheckpoint()
     {
         yield return new WaitForSeconds (1f * Time.timeScale);
         trackCheckpoints = TerrainGenerator.Singleton.GetCharacterBlock().GetComponent<TrackCheckpoints>();
-        //trackCheckpoints = GameObject.Find("Start(Clone)").GetComponent<TrackCheckpoints>();
         currentTrackCheckpoints = trackCheckpoints;
         Subscribe(trackCheckpoints);
         redrunnerRigidbody.constraints &= ~RigidbodyConstraints2D.FreezePosition;
@@ -85,13 +66,12 @@ public class RedAgent : Agent
     {
         stepsSinceLastCheckpoint = 0;
         firstCheckpointPassed = true;
-        //Debug.Log("rew event");
         Debug.Log("reward added");
         AddReward(1f);
         currentBlockCheckpointsNumber++;
         if (currentBlockCheckpointsNumber == currentTrackCheckpoints.getCheckpointsNumber())
         {
-            isBlockFinished = true;
+            //isBlockFinished = true;
             currentBlockCheckpointsNumber = 0;
         }
     }
@@ -109,7 +89,7 @@ public class RedAgent : Agent
     private void Awake()
     {
         redrunner = GetComponent<RedCharacter>();
-        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         Academy.Instance.AutomaticSteppingEnabled = false;
         redrunnerRigidbody = GetComponent<Rigidbody2D>();
     }
@@ -148,23 +128,6 @@ public class RedAgent : Agent
             EndEpisode();
             agentDead = false;
         }
-
-        /*if (trackCheckpoints.getCheckpointState().Equals("correct"))
-        {
-            stepsSinceLastCheckpoint = 0;
-            firstCheckpointPassed = true;
-            Debug.Log("reward added");
-            AddReward(1f);
-            trackCheckpoints.setCheckpointState("not set");
-        } else if (trackCheckpoints.getCheckpointState().Equals("wrong"))
-        {
-            stepsSinceLastCheckpoint = 0;
-            Debug.Log("penalty added");
-            AddReward(-1f);
-            trackCheckpoints.setCheckpointState("not set");
-            redrunner.Die();
-            EndEpisode();
-        }*/
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -182,10 +145,10 @@ public class RedAgent : Agent
         switch (jump)
         {
             case 0:
-                redrunner.jumping = 0; //non sta saltando
+                redrunner.jumping = 0; // not jumping
                 break;
             case 1:
-                redrunner.jumping = 1; //jump button down
+                redrunner.jumping = 1; // jump button pressed
                 AddReward(-0.1f);
                 break;
         }
@@ -214,11 +177,6 @@ public class RedAgent : Agent
             EndEpisode();
         }
     }
-
-    // private void OnDestroy()
-    // {
-    //     Unsubscribe(trackCheckpoints);
-    // }
 
     private void Unsubscribe(TrackCheckpoints tc)
     {

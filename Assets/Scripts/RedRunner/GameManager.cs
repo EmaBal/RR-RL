@@ -195,7 +195,7 @@ namespace RedRunner
             }
         }
 
-        IEnumerator Load() // non serve piu
+        IEnumerator Load() // not needed
         {
             yield return new WaitForSecondsRealtime(1f);
             var uiManager = UIManager.Singleton;

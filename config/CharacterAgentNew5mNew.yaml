@@ -14,7 +14,7 @@ behaviors:
       beta: 1e-2
       epsilon: 0.3
       lambd: 0.95
-      num_epoch: 5
+      num_epoch: 3
 
     # Configuration of the neural network (common to PPO/SAC)
     network_settings:

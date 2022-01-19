@@ -1,0 +1,2 @@
+epoche 5: 735 mb python, 174 mb unity
+camera sensor 64x64 3 obs stacks, 3 vector stacks: 1362 mb python, 288 unity
