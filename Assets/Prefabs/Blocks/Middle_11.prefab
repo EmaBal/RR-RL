@@ -24137,7 +24137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveType: 0
-  delay: 0
+  delay: 50
   speed: 2
   smoothTime: 0.3
   acceleration: 1

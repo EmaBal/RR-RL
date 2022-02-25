@@ -16,16 +16,10 @@ public class RedAgent : Agent
 {
     private RedCharacter redrunner;
     private TrackCheckpoints trackCheckpoints;
-    //private GameObject startClone;
-    //private GameObject[] gameObjects;
-    //private List<GameObject> gameObjectsList;
-    // GameObject[] newGameObjects;
     private int currentBlockCheckpointsNumber;
     private TrackCheckpoints currentTrackCheckpoints;
-    //private bool isBlockFinished = false;
     private bool firstCheckpointPassed;
     private bool agentDead;
-    //private GameManager gm;
     private int stepsSinceLastCheckpoint;
     Rigidbody2D redrunnerRigidbody;
 
@@ -70,10 +64,7 @@ public class RedAgent : Agent
         AddReward(1f);
         currentBlockCheckpointsNumber++;
         if (currentBlockCheckpointsNumber == currentTrackCheckpoints.getCheckpointsNumber())
-        {
-            //isBlockFinished = true;
             currentBlockCheckpointsNumber = 0;
-        }
     }
     
     private void TrackCheckpoints_OnPlayerWrongCheckpoint(object sender, System.EventArgs e)
@@ -89,7 +80,6 @@ public class RedAgent : Agent
     private void Awake()
     {
         redrunner = GetComponent<RedCharacter>();
-        //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         Academy.Instance.AutomaticSteppingEnabled = false;
         redrunnerRigidbody = GetComponent<Rigidbody2D>();
     }

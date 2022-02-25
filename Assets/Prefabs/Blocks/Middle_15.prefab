@@ -499,8 +499,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveType: 3
-  delay: 1
-  speed: 20
+  delay: 50
+  speed: 1
   smoothTime: 0.3
   acceleration: 0.008
   maxSpeed: 60
@@ -548,8 +548,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveType: 3
-  delay: 1
-  speed: 20
+  delay: 50
+  speed: 1
   smoothTime: 0.3
   acceleration: 0.01
   maxSpeed: 60
@@ -2701,8 +2701,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveType: 3
-  delay: 1
-  speed: 20
+  delay: 50
+  speed: 1
   smoothTime: 0.3
   acceleration: 0.008
   maxSpeed: 60
@@ -6753,8 +6753,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveType: 3
-  delay: 1
-  speed: 20
+  delay: 50
+  speed: 1
   smoothTime: 0.3
   acceleration: 0.008
   maxSpeed: 60

@@ -7643,7 +7643,7 @@ MonoBehaviour:
   m_FollowSpeeds: 1
   m_Speed: 1
   m_FollowDelays: 1
-  m_Delay: 0
+  m_Delay: 10
   m_Smart: 1
   m_RangeSize: {x: 7, y: 10, z: 1}
   m_RangeOffset: {x: 0, y: -3.37, z: 0}
@@ -12751,8 +12751,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveType: 3
-  delay: 1
-  speed: 20
+  delay: 50
+  speed: 1
   smoothTime: 0.3
   acceleration: 0.008
   maxSpeed: 60

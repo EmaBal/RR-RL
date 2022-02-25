@@ -80,7 +80,7 @@ namespace RedRunner.Utilities
 			}
 		}
 
-		void Update ()
+		void FixedUpdate ()
 		{
 			if (m_Smart) {
 				Collider2D[] colliders = Physics2D.OverlapBoxAll (transform.position + m_RangeOffset, m_RangeSize, 0f, LayerMask.GetMask ("Characters"));

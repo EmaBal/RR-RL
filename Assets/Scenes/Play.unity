@@ -50548,7 +50548,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: x 263051
+  m_Text: x 3
   m_CoinTextFormat: x {0}
 --- !u!114 &254
 MonoBehaviour:
@@ -56980,7 +56980,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: 5eff8ff56411b1c42b9e7199b4cf432b,
+      objectReference: {fileID: 5022602860645237092, guid: 5715687dc94b4894491965ce884903f5,
         type: 3}
     - target: {fileID: 4115949647110239947, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
         type: 3}
@@ -57055,7 +57055,7 @@ PrefabInstance:
     - target: {fileID: 4539713298992423285, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
         type: 3}
       propertyPath: m_RayLength
-      value: 68
+      value: 69
       objectReference: {fileID: 0}
     - target: {fileID: 4539713298992423285, guid: 639fab1b9d4c44d44908b5a6ecaceafc,
         type: 3}

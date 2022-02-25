@@ -20,8 +20,8 @@ behaviors:
     network_settings:
       vis_encode_type: simple
       normalize: true
-      hidden_units: 512
-      num_layers: 5
+      hidden_units: 256
+      num_layers: 4
 
     # Trainer configurations common to all trainers
     max_steps: 5000000
